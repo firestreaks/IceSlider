@@ -98,25 +98,50 @@
 
   .rank-badge{color:var(--ice-cyan);font-weight:700;letter-spacing:3px;text-transform:uppercase;
     display:block;margin-bottom:6px;text-shadow:0 0 10px rgba(127,232,255,0.4);font-size:0.85rem;}
-  .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 
-  .level-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px;}
-  .lvl-box{padding:14px 6px;background:rgba(255,255,255,0.03);border-radius:12px;cursor:pointer;
-    border:1px solid #23486a;font-size:0.78rem;line-height:1.3;transition:.2s;}
-  .lvl-box .icon{font-size:1.4rem;display:block;margin-bottom:4px;}
-  .lvl-box.unlocked{background:rgba(63,169,245,0.18);border-color:var(--ice-cyan);}
-  .lvl-box.unlocked:hover{transform:translateY(-3px);box-shadow:0 4px 16px rgba(127,232,255,0.35);}
-  .lvl-box.cleared{border-color:var(--gold);box-shadow:inset 0 0 12px rgba(127,232,255,0.25);}
-  .lvl-box.locked{opacity:0.3;cursor:not-allowed;}
+  .shard-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(127,232,255,0.12);
+    border:1px solid var(--panel-line);padding:6px 14px;border-radius:20px;font-weight:700;
+    color:var(--ice-cyan);font-size:0.85rem;margin-bottom:14px;}
+
+  .path-map{position:relative;width:100%;height:420px;margin-top:10px;}
+  .path-map svg.track{position:absolute;inset:0;width:100%;height:100%;}
+  .path-node{position:absolute;transform:translate(-50%,-50%);width:56px;height:56px;
+    border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(10,35,55,0.9);border:2px solid #23486a;cursor:pointer;transition:.2s;z-index:2;}
+  .path-node .node-icon{font-size:1.3rem;line-height:1;}
+  .path-node .node-num{font-size:0.55rem;font-weight:800;color:#9fd4ec;letter-spacing:1px;}
+  .path-node.unlocked{border-color:var(--ice-cyan);background:rgba(63,169,245,0.22);}
+  .path-node.unlocked:hover{transform:translate(-50%,-50%) scale(1.12);box-shadow:0 0 18px rgba(127,232,255,0.5);}
+  .path-node.cleared{border-color:var(--gold);box-shadow:inset 0 0 10px rgba(127,232,255,0.3);}
+  .path-node.locked{opacity:0.3;cursor:not-allowed;}
+  .path-node.current{animation:nodePulse 1.6s ease-in-out infinite;}
+  @keyframes nodePulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(127,232,255,0.5);}
+    50%{box-shadow:0 0 0 8px rgba(127,232,255,0);}
+  }
+  .node-label{position:absolute;top:100%;margin-top:4px;font-size:0.6rem;color:#9fd4ec;
+    white-space:nowrap;left:50%;transform:translateX(-50%);text-align:center;max-width:80px;line-height:1.1;}
+
+  .blaze-figure{display:flex;justify-content:center;margin:6px 0 4px;}
+  .blaze-figure svg{width:150px;height:190px;filter:drop-shadow(0 0 16px rgba(127,232,255,0.4));}
+  .blaze-figure .eye{animation:eyePulse 1.5s ease-in-out infinite;}
 
   /* Battle screen */
+
   .battle-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
   .hearts{font-size:1.1rem;letter-spacing:3px;}
   .qcount{font-weight:700;color:#9fd4ec;}
 
   .boss-wrap{position:relative;margin:10px 0 16px;}
-  .boss-emoji{font-size:3.4rem;display:inline-block;transition:transform .15s;}
-  .boss-emoji.shake{animation:shake .4s;}
+  .boss-figure{display:flex;justify-content:center;transition:transform .15s;}
+  .boss-figure svg{width:150px;height:150px;filter:drop-shadow(0 0 16px rgba(127,232,255,0.4));}
+  .boss-figure.shake{animation:shake .4s;}
+  .boss-figure .eye{animation:eyePulse 1.5s ease-in-out infinite;}
+  @keyframes eyePulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.45;}
+  }
   @keyframes shake{
     0%,100%{transform:translateX(0);}
     20%{transform:translateX(-8px) rotate(-4deg);}
@@ -179,6 +204,26 @@
 
 <div id="snow-container"></div>
 
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gradIce" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bdeeff"/><stop offset="100%" stop-color="#3fa9f5"/>
+    </linearGradient>
+    <linearGradient id="gradFrost" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9fd4ec"/><stop offset="100%" stop-color="#2f6fa8"/>
+    </linearGradient>
+    <linearGradient id="gradCorrupt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c6b8ff"/><stop offset="100%" stop-color="#6c5ce7"/>
+    </linearGradient>
+    <linearGradient id="gradTyrant" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff9fb3"/><stop offset="100%" stop-color="#a3123a"/>
+    </linearGradient>
+    <linearGradient id="gradReactor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd9a0"/><stop offset="100%" stop-color="#d9622b"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <div class="container">
 
   <!-- AUTH SCREEN -->
@@ -211,20 +256,38 @@
       </div>
       <button class="btn btn-ghost btn-small" onclick="logOut()">Log Out</button>
     </div>
-    <p style="color:#9fd4ec;font-size:0.85rem;margin-top:0;">Choose a map. Defeat its guardian to advance.</p>
-    <div class="level-grid" id="lvl-btns"></div>
+    <div class="shard-badge">❄ Frost Shards: <span id="shards-map">0</span></div>
+    <p style="color:#9fd4ec;font-size:0.85rem;margin-top:0;">Follow the trail. Defeat each guardian to advance.</p>
+    <div class="path-map" id="path-map">
+      <svg class="track" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path id="track-path" d="" stroke="#3fa9f5" stroke-width="0.8" fill="none" stroke-dasharray="2,2" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PREBATTLE LOBBY -->
+  <div id="prebattle" class="hidden">
+    <div class="blaze-figure" id="blaze-figure"></div>
+    <h2 style="margin:6px 0 2px;">ARE YOU READY TO BATTLE WITH KNOWLEDGE?</h2>
+    <p class="res-stats" id="prebattle-sub"></p>
+    <div class="shard-badge">❄ Frost Shards: <span id="shards-prebattle">0</span></div>
+    <div class="res-actions">
+      <button class="btn" onclick="confirmEnterBattle()">Enter Battle</button>
+      <button class="btn btn-ghost" onclick="showMap()">Back</button>
+    </div>
   </div>
 
   <!-- BATTLE SCREEN -->
   <div id="battle" class="hidden">
     <div class="battle-top">
       <span class="hearts" id="hearts-display">❤❤❤</span>
+      <span class="qcount" id="shards-battle">❄ 0</span>
       <span class="qcount" id="q-num">1/10</span>
     </div>
 
     <div class="boss-wrap">
       <div class="boss-name" id="boss-name">GLACIERFANG</div>
-      <div class="boss-emoji" id="boss-emoji">🐺</div>
+      <div class="boss-figure" id="boss-figure"></div>
       <div class="hpbar-bg"><div class="hpbar-fill" id="boss-hp-fill"></div></div>
       <div class="crit-text" id="crit-text">CRIT SLASH!</div>
     </div>
@@ -234,9 +297,9 @@
     <div class="options-grid" id="opts"></div>
 
     <div class="abilities">
-      <button class="ability-btn" id="ab-freeze" onclick="useFreeze()">🧊 Freeze Time<small>+5s to clock</small></button>
-      <button class="ability-btn" id="ab-shield" onclick="useShield()">🛡 Frost Shield<small>Blocks next miss</small></button>
-      <button class="ability-btn" id="ab-sight" onclick="useSight()">👁 Ice Sight<small>Removes 2 wrong</small></button>
+      <button class="ability-btn" id="ab-freeze" onclick="useFreeze()">🧊 Freeze Time<small>+5s · 20❄</small></button>
+      <button class="ability-btn" id="ab-shield" onclick="useShield()">🛡 Frost Shield<small>Blocks next miss · 30❄</small></button>
+      <button class="ability-btn" id="ab-sight" onclick="useSight()">👁 Ice Sight<small>Removes 2 wrong · 25❄</small></button>
     </div>
   </div>
 
@@ -316,7 +379,7 @@ async function signUp(u,p){
   const existing = storageGet('iceslider_user_'+u);
   if(existing){ showAuthError('That name is already claimed. Try logging in instead.'); return; }
 
-  const data = { password: simpleHash(p), unlocked: 1, cleared: [] };
+  const data = { password: simpleHash(p), unlocked: 1, cleared: [], shards: 0 };
   const ok = storageSet('iceslider_user_'+u, JSON.stringify(data));
   if(!ok){ showAuthError('Could not create account. Try again.'); return; }
   currentUser = u; userData = data;
@@ -330,6 +393,7 @@ async function logIn(u,p){
   try{ data = JSON.parse(raw); }
   catch(e){ showAuthError('Save data looked corrupted. Try signing up again.'); return; }
   if(data.password !== simpleHash(p)){ showAuthError('Wrong password.'); return; }
+  if(typeof data.shards !== 'number') data.shards = 0;
   currentUser = u; userData = data;
   enterMap();
 }
@@ -375,6 +439,154 @@ const LEVEL_CONFIG = [
   [12,100],[11,110],[10.5,120],[10,130],[9.5,140],
   [9,150],[8.5,160],[8,170],[7.5,180],[7,200]
 ];
+
+const BOSS_SVGS = [
+// 1 GLACIERFANG - crouching ice wolf
+`<svg viewBox="0 0 200 180">
+  <polygon points="45,150 30,178 62,178 68,150" fill="url(#gradFrost)"/>
+  <polygon points="130,150 120,178 155,178 148,150" fill="url(#gradFrost)"/>
+  <polygon points="20,95 175,80 165,150 40,155" fill="url(#gradIce)"/>
+  <polygon points="10,105 -10,120 12,128" fill="url(#gradIce)"/>
+  <polygon points="140,55 195,30 178,100 130,90" fill="url(#gradIce)"/>
+  <polygon points="150,35 160,0 172,40" fill="#eaf6ff"/>
+  <polygon points="175,32 190,-2 198,38" fill="#eaf6ff"/>
+  <polygon points="60,88 90,70 100,90 70,100" fill="#eaf6ff" opacity="0.7"/>
+  <circle class="eye" cx="163" cy="58" r="6" fill="#7fe8ff"/>
+  <circle class="eye" cx="182" cy="60" r="5" fill="#7fe8ff"/>
+</svg>`,
+// 2 STALAG THE SENTINEL - blocky stone/ice golem
+`<svg viewBox="0 0 200 190">
+  <rect x="55" y="150" width="30" height="35" fill="url(#gradFrost)"/>
+  <rect x="115" y="150" width="30" height="35" fill="url(#gradFrost)"/>
+  <rect x="35" y="70" width="130" height="90" rx="6" fill="url(#gradIce)"/>
+  <rect x="10" y="55" width="45" height="45" rx="4" fill="url(#gradFrost)"/>
+  <rect x="145" y="55" width="45" height="45" rx="4" fill="url(#gradFrost)"/>
+  <rect x="65" y="15" width="70" height="60" rx="6" fill="url(#gradIce)"/>
+  <polygon points="70,15 80,-15 90,15" fill="#eaf6ff"/>
+  <polygon points="95,15 100,-20 108,15" fill="#eaf6ff"/>
+  <polygon points="115,15 122,-12 132,15" fill="#eaf6ff"/>
+  <circle class="eye" cx="100" cy="45" r="9" fill="#7fe8ff"/>
+</svg>`,
+// 3 BLIZZARD WRAITH - swirling hooded cloak
+`<svg viewBox="0 0 200 190">
+  <path d="M100 10 C40 20 20 90 35 150 C50 185 80 175 60 150 C90 175 110 175 140 150 C120 175 150 185 165 150 C180 90 160 20 100 10 Z" fill="url(#gradCorrupt)"/>
+  <path d="M100 30 C70 40 60 80 68 120" stroke="#eaf6ff" stroke-width="3" fill="none" opacity="0.5"/>
+  <path d="M100 30 C130 40 140 80 132 120" stroke="#eaf6ff" stroke-width="3" fill="none" opacity="0.5"/>
+  <ellipse cx="100" cy="65" rx="38" ry="30" fill="#1c1240"/>
+  <circle class="eye" cx="88" cy="68" r="6" fill="#c6b8ff"/>
+  <circle class="eye" cx="114" cy="68" r="6" fill="#c6b8ff"/>
+</svg>`,
+// 4 CHRONICLE WIGHT - tattered robed ghost
+`<svg viewBox="0 0 200 190">
+  <polygon points="100,5 150,70 165,150 145,185 130,150 115,185 100,155 85,185 70,150 55,185 35,150 50,70" fill="url(#gradCorrupt)"/>
+  <polygon points="100,20 125,65 75,65" fill="#0e0a24"/>
+  <circle class="eye" cx="88" cy="60" r="5" fill="#c6b8ff"/>
+  <circle class="eye" cx="112" cy="60" r="5" fill="#c6b8ff"/>
+  <rect x="30" y="95" width="18" height="4" fill="#eaf6ff" opacity="0.6"/>
+  <rect x="152" y="95" width="18" height="4" fill="#eaf6ff" opacity="0.6"/>
+</svg>`,
+// 5 CRYO COLOSSUS - large armored humanoid
+`<svg viewBox="0 0 200 190">
+  <rect x="60" y="150" width="25" height="35" fill="url(#gradIce)"/>
+  <rect x="115" y="150" width="25" height="35" fill="url(#gradIce)"/>
+  <polygon points="30,70 170,70 155,155 45,155" fill="url(#gradFrost)"/>
+  <rect x="5" y="55" width="45" height="70" rx="8" fill="url(#gradIce)"/>
+  <rect x="150" y="55" width="45" height="70" rx="8" fill="url(#gradIce)"/>
+  <rect x="65" y="10" width="70" height="65" rx="8" fill="url(#gradFrost)"/>
+  <polygon points="70,10 78,-18 88,10" fill="#eaf6ff"/>
+  <polygon points="90,10 100,-25 110,10" fill="#eaf6ff"/>
+  <polygon points="112,10 122,-18 130,10" fill="#eaf6ff"/>
+  <circle cx="100" cy="105" r="14" fill="#7fe8ff" opacity="0.85"/>
+  <circle class="eye" cx="88" cy="45" r="8" fill="#7fe8ff"/>
+  <circle class="eye" cx="112" cy="45" r="8" fill="#7fe8ff"/>
+</svg>`,
+// 6 VOIDGLASS SERPENT - long sinuous body
+`<svg viewBox="0 0 200 190">
+  <path d="M10 160 C40 120 20 90 55 80 C90 70 70 40 105 35 C140 30 130 60 160 55" stroke="url(#gradCorrupt)" stroke-width="26" fill="none" stroke-linecap="round"/>
+  <polygon points="160,40 200,50 165,72" fill="url(#gradCorrupt)"/>
+  <polygon points="200,50 215,45 205,60" fill="#eaf6ff"/>
+  <circle class="eye" cx="178" cy="48" r="5" fill="#7fe8ff"/>
+</svg>`,
+// 7 MARROWFROST - skeletal ice wraith
+`<svg viewBox="0 0 200 190">
+  <ellipse cx="100" cy="55" rx="38" ry="42" fill="#dfeef6"/>
+  <circle class="eye" cx="85" cy="55" r="8" fill="#ff5d73"/>
+  <circle class="eye" cx="115" cy="55" r="8" fill="#ff5d73"/>
+  <polygon points="90,80 110,80 105,95 95,95" fill="#0a2338"/>
+  <rect x="80" y="95" width="8" height="60" fill="#dfeef6"/>
+  <rect x="96" y="95" width="8" height="60" fill="#dfeef6"/>
+  <rect x="112" y="95" width="8" height="60" fill="#dfeef6"/>
+  <path d="M60 100 Q100 115 140 100" stroke="#dfeef6" stroke-width="6" fill="none"/>
+  <path d="M55 120 Q100 133 145 120" stroke="#dfeef6" stroke-width="6" fill="none"/>
+  <polygon points="60,20 70,-10 80,20" fill="#dfeef6"/>
+  <polygon points="120,20 130,-10 140,20" fill="#dfeef6"/>
+</svg>`,
+// 8 ELEMENT WARDEN - hexagonal construct
+`<svg viewBox="0 0 200 190">
+  <polygon points="100,15 165,55 165,120 100,160 35,120 35,55" fill="url(#gradIce)"/>
+  <polygon points="100,40 145,65 145,110 100,135 55,110 55,65" fill="#0a2338"/>
+  <circle class="eye" cx="100" cy="87" r="14" fill="#7fe8ff"/>
+  <rect x="15" y="80" width="20" height="10" fill="url(#gradFrost)"/>
+  <rect x="165" y="80" width="20" height="10" fill="url(#gradFrost)"/>
+  <polygon points="80,160 100,185 120,160" fill="url(#gradFrost)"/>
+</svg>`,
+// 9 REACTOR KING - mechanical reactor core
+`<svg viewBox="0 0 200 190">
+  <rect x="55" y="150" width="24" height="30" fill="url(#gradFrost)"/>
+  <rect x="120" y="150" width="24" height="30" fill="url(#gradFrost)"/>
+  <polygon points="30,60 170,60 158,155 42,155" fill="url(#gradFrost)"/>
+  <circle cx="100" cy="100" r="30" fill="url(#gradReactor)"/>
+  <circle cx="100" cy="100" r="14" fill="#fff6e0"/>
+  <polygon points="100,10 112,45 88,45" fill="url(#gradReactor)"/>
+  <polygon points="60,20 75,50 50,50" fill="url(#gradReactor)"/>
+  <polygon points="140,20 150,50 125,50" fill="url(#gradReactor)"/>
+  <circle class="eye" cx="82" cy="55" r="6" fill="#ff5d73"/>
+  <circle class="eye" cx="118" cy="55" r="6" fill="#ff5d73"/>
+</svg>`,
+// 10 KRYOVAX, THE FROST TYRANT - final boss, crowned and winged
+`<svg viewBox="0 0 200 190">
+  <polygon points="10,90 45,55 40,130 5,150" fill="url(#gradTyrant)"/>
+  <polygon points="190,90 155,55 160,130 195,150" fill="url(#gradTyrant)"/>
+  <rect x="65" y="150" width="26" height="32" fill="url(#gradTyrant)"/>
+  <rect x="110" y="150" width="26" height="32" fill="url(#gradTyrant)"/>
+  <polygon points="45,65 155,65 145,155 55,155" fill="url(#gradCorrupt)"/>
+  <rect x="70" y="15" width="60" height="60" rx="8" fill="url(#gradTyrant)"/>
+  <polygon points="72,15 82,-25 95,15" fill="#ffe0e6"/>
+  <polygon points="90,15 100,-35 110,15" fill="#ffe0e6"/>
+  <polygon points="105,15 118,-25 128,15" fill="#ffe0e6"/>
+  <circle class="eye" cx="87" cy="48" r="8" fill="#ff5d73"/>
+  <circle class="eye" cx="113" cy="48" r="8" fill="#ff5d73"/>
+  <circle cx="100" cy="105" r="12" fill="#ff9fb3" opacity="0.8"/>
+</svg>`
+];
+
+// Blaze, the Ice Master - standing pose for the pre-battle lobby
+const BLAZE_SVG = `<svg viewBox="0 0 200 260">
+  <polygon points="60,180 40,255 75,255 85,180" fill="url(#gradIce)"/>
+  <polygon points="115,180 125,255 160,255 140,180" fill="url(#gradIce)"/>
+  <polygon points="30,60 30,175 45,190 55,175 55,60" fill="url(#gradCorrupt)" opacity="0.9"/>
+  <polygon points="55,60 145,60 155,190 45,190" fill="url(#gradFrost)"/>
+  <polygon points="70,90 130,90 122,140 78,140" fill="#0a2338" opacity="0.6"/>
+  <circle cx="100" cy="35" r="30" fill="#eaf6ff"/>
+  <polygon points="75,15 85,-15 95,15" fill="#bdeeff"/>
+  <polygon points="105,15 115,-15 125,15" fill="#bdeeff"/>
+  <circle class="eye" cx="90" cy="35" r="5" fill="#3fa9f5"/>
+  <circle class="eye" cx="110" cy="35" r="5" fill="#3fa9f5"/>
+  <g transform="rotate(18 150 70)">
+    <rect x="146" y="70" width="9" height="115" fill="#dfeef6"/>
+    <polygon points="150,60 168,15 178,68" fill="#eaf6ff"/>
+    <rect x="140" y="178" width="21" height="10" fill="#3fa9f5"/>
+  </g>
+</svg>`;
+
+// Path-map node coordinates (0-100 scale, matches SVG viewBox and node % positioning)
+const NODE_POS = [
+  {x:14,y:90},{x:38,y:80},{x:64,y:86},{x:80,y:68},{x:54,y:60},
+  {x:24,y:54},{x:16,y:36},{x:44,y:28},{x:74,y:20},{x:52,y:6}
+];
+
+const ABILITY_COSTS = {freeze:20, shield:30, sight:25};
+const SHARD_NORMAL = 8, SHARD_CRIT = 15, SHARD_VICTORY_BONUS = 40;
 
 const QUESTIONS = [
 [ // 1 Arithmetic
@@ -501,41 +713,62 @@ const QUESTIONS = [
 
 /* ============ GAME STATE ============ */
 let activeLvl = 1;
+let pendingLevel = 1;
 let qIdx = 0;
 let hearts = 3;
 let bossHP = 100, bossMaxHP = 100;
 let totalTime = 10, remaining = 10;
 let timerInterval = null;
 let shieldActive = false;
-let abilitiesUsed = {freeze:false, shield:false, sight:false};
 let crits = 0, correctCount = 0;
 let questionLocked = false;
 
-/* ============ MAP SCREEN ============ */
+/* ============ MAP SCREEN (winding path, Fire Slasher style) ============ */
 function showMap(){
   showScreen('map');
   document.getElementById('greet').innerText = currentUser || 'Blaze';
   const rankIdx = Math.max(0, (userData.unlocked - 1));
   document.getElementById('current-rank').innerText = 'RANK: ' + RANKS[Math.min(rankIdx, RANKS.length-1)].toUpperCase();
+  document.getElementById('shards-map').innerText = userData.shards;
 
-  const grid = document.getElementById('lvl-btns');
-  grid.innerHTML = '';
+  const container = document.getElementById('path-map');
+  container.querySelectorAll('.path-node').forEach(n=>n.remove());
+
+  const d = NODE_POS.map((p,i)=> (i===0?'M':'L') + p.x + ',' + p.y).join(' ');
+  document.getElementById('track-path').setAttribute('d', d);
+
   for(let i=1;i<=10;i++){
     const meta = MAP_META[i-1];
+    const pos = NODE_POS[i-1];
     const unlocked = i <= userData.unlocked;
     const cleared = userData.cleared.includes(i);
-    const b = document.createElement('div');
-    b.className = `lvl-box ${unlocked ? 'unlocked':'locked'} ${cleared?'cleared':''}`;
-    b.innerHTML = `<span class="icon">${meta.icon}</span><b>MAP ${i}</b><br><small>${meta.name}</small>`;
-    if(unlocked) b.onclick = () => startLvl(i);
-    grid.appendChild(b);
+    const isCurrent = (i === userData.unlocked && !cleared);
+
+    const node = document.createElement('div');
+    node.className = `path-node ${unlocked?'unlocked':'locked'} ${cleared?'cleared':''} ${isCurrent?'current':''}`;
+    node.style.left = pos.x + '%';
+    node.style.top = pos.y + '%';
+    node.innerHTML = `<span class="node-icon">${meta.icon}</span><span class="node-num">${i}</span>
+      <span class="node-label">${meta.name}</span>`;
+    if(unlocked) node.onclick = () => selectLevel(i);
+    container.appendChild(node);
   }
 }
+
+function selectLevel(l){
+  pendingLevel = l;
+  const meta = MAP_META[l-1];
+  document.getElementById('blaze-figure').innerHTML = BLAZE_SVG;
+  document.getElementById('prebattle-sub').innerText = `MAP ${l}: ${meta.name} · Guardian: ${meta.boss}`;
+  document.getElementById('shards-prebattle').innerText = userData.shards;
+  showScreen('prebattle');
+}
+
+function confirmEnterBattle(){ startLvl(pendingLevel); }
 
 /* ============ BATTLE FLOW ============ */
 function startLvl(l){
   activeLvl = l; qIdx = 0; hearts = 3; crits = 0; correctCount = 0;
-  abilitiesUsed = {freeze:false, shield:false, sight:false};
   shieldActive = false;
 
   const cfg = LEVEL_CONFIG[l-1];
@@ -543,22 +776,24 @@ function startLvl(l){
 
   const meta = MAP_META[l-1];
   document.getElementById('boss-name').innerText = meta.boss;
-  document.getElementById('boss-emoji').innerText = meta.emoji;
-  resetAbilityButtons();
+  document.getElementById('boss-figure').innerHTML = BOSS_SVGS[l-1];
+  updateAbilityButtons();
   showScreen('battle');
   loadQ();
 }
 
-function resetAbilityButtons(){
-  document.getElementById('ab-freeze').disabled = false;
-  document.getElementById('ab-shield').disabled = false;
-  document.getElementById('ab-sight').disabled = false;
+function updateAbilityButtons(){
+  document.getElementById('ab-freeze').disabled = userData.shards < ABILITY_COSTS.freeze;
+  document.getElementById('ab-shield').disabled = userData.shards < ABILITY_COSTS.shield;
+  document.getElementById('ab-sight').disabled = userData.shards < ABILITY_COSTS.sight;
+  document.getElementById('shards-battle').innerText = '❄ ' + userData.shards;
 }
 
 function updateHUD(){
   document.getElementById('q-num').innerText = `${qIdx+1}/10`;
   document.getElementById('hearts-display').innerText = '❤'.repeat(hearts) + '🖤'.repeat(3-hearts);
   document.getElementById('boss-hp-fill').style.width = Math.max(0,(bossHP/bossMaxHP)*100) + '%';
+  updateAbilityButtons();
 }
 
 function loadQ(){
@@ -612,10 +847,12 @@ function selectOption(idx, correctIdx, btnEl){
 function handleHit(isCrit){
   correctCount++;
   const dmg = isCrit ? 22 : 12;
+  userData.shards += isCrit ? SHARD_CRIT : SHARD_NORMAL;
   if(isCrit){ crits++; showCrit(); }
   spawnSlash();
   bossHP -= dmg;
   updateHUD();
+  saveProgress();
   setTimeout(nextStep, 650);
 }
 
@@ -627,8 +864,8 @@ function handleMiss(wasTimeout){
     shieldActive = false;
   } else {
     hearts--;
-    document.getElementById('boss-emoji').classList.add('shake');
-    setTimeout(()=>document.getElementById('boss-emoji').classList.remove('shake'), 400);
+    document.getElementById('boss-figure').classList.add('shake');
+    setTimeout(()=>document.getElementById('boss-figure').classList.remove('shake'), 400);
   }
   updateHUD();
   setTimeout(nextStep, 650);
@@ -640,7 +877,7 @@ function spawnSlash(){
   shard.className = 'ice-shard';
   shard.textContent = '🗡️';
   wrap.appendChild(shard);
-  const boss = document.getElementById('boss-emoji');
+  const boss = document.getElementById('boss-figure');
   boss.classList.add('shake');
   setTimeout(()=>{ boss.classList.remove('shake'); shard.remove(); }, 500);
 }
@@ -663,12 +900,13 @@ async function victory(){
   clearInterval(timerInterval);
   if(!userData.cleared.includes(activeLvl)) userData.cleared.push(activeLvl);
   if(activeLvl === userData.unlocked && userData.unlocked < 10) userData.unlocked++;
+  userData.shards += SHARD_VICTORY_BONUS;
   await saveProgress();
 
   showScreen('results');
   document.getElementById('res-title').innerText = `❄ ${MAP_META[activeLvl-1].boss} SHATTERED!`;
   document.getElementById('res-stats').innerText =
-    `${correctCount}/10 correct - ${crits} crit slashes - ${hearts} heart(s) remaining`;
+    `${correctCount}/10 correct - ${crits} crit slashes - ${hearts} heart(s) remaining - +${SHARD_VICTORY_BONUS}❄ bonus`;
   document.getElementById('res-retry').classList.add('hidden');
 }
 
@@ -681,25 +919,28 @@ function defeat(){
   document.getElementById('res-retry').classList.remove('hidden');
 }
 
-/* ============ ABILITIES ============ */
+/* ============ ABILITIES (cost Frost Shards earned in battle) ============ */
 function useFreeze(){
-  if(abilitiesUsed.freeze || questionLocked) return;
-  abilitiesUsed.freeze = true;
-  document.getElementById('ab-freeze').disabled = true;
+  if(questionLocked || userData.shards < ABILITY_COSTS.freeze) return;
+  userData.shards -= ABILITY_COSTS.freeze;
+  saveProgress();
+  updateAbilityButtons();
   remaining = Math.min(totalTime + 2, remaining + 5);
 }
 
 function useShield(){
-  if(abilitiesUsed.shield) return;
-  abilitiesUsed.shield = true;
+  if(userData.shards < ABILITY_COSTS.shield) return;
+  userData.shards -= ABILITY_COSTS.shield;
+  saveProgress();
+  updateAbilityButtons();
   shieldActive = true;
-  document.getElementById('ab-shield').disabled = true;
 }
 
 function useSight(){
-  if(abilitiesUsed.sight || questionLocked) return;
-  abilitiesUsed.sight = true;
-  document.getElementById('ab-sight').disabled = true;
+  if(questionLocked || userData.shards < ABILITY_COSTS.sight) return;
+  userData.shards -= ABILITY_COSTS.sight;
+  saveProgress();
+  updateAbilityButtons();
   const q = QUESTIONS[activeLvl-1][qIdx];
   const correctIdx = q[5];
   const wrongIdxs = [0,1,2,3].filter(i => i !== correctIdx);
