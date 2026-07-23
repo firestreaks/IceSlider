@@ -1,334 +1,714 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FireStreaks: Dragon Master</title>
-    <style>
-        :root {
-            --fire-gold: #ffd700;
-            --fire-red: #ff4500;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICESLIDER — Blaze, the Ice Master's Trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#040f1c;
+    --bg-mid:#0a2338;
+    --panel:rgba(10,36,58,0.82);
+    --panel-line:rgba(127,232,255,0.35);
+    --ice-cyan:#7fe8ff;
+    --ice-blue:#3fa9f5;
+    --ice-white:#eaf6ff;
+    --frost-purple:#8c8bff;
+    --danger:#ff5d73;
+    --gold:#c9f6ff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:'Rajdhani',sans-serif;
+    min-height:100vh;
+    display:flex;justify-content:center;align-items:center;
+    background:
+      radial-gradient(ellipse at 20% -10%, #123a5c 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 110%, #0d2f4d 0%, transparent 50%),
+      linear-gradient(160deg, var(--bg-deep), #071627 60%, var(--bg-deep));
+    color:var(--ice-white);
+    overflow:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.display{font-family:'Orbitron',sans-serif;}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(-45deg, #230101, #4a0e0e, #800000, #1a0101);
-            background-size: 400% 400%;
-            animation: fireGradient 12s ease infinite;
-            color: white;
-            overflow: hidden;
-        }
+  #snow-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .flake{position:absolute;top:-5%;color:rgba(234,246,255,0.55);user-select:none;
+    animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite;}
+  @keyframes fall{
+    0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
+    100%{transform:translateY(110vh) translateX(20px) rotate(200deg);}
+  }
 
-        @keyframes fireGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  .container{
+    position:relative;z-index:1;
+    background:var(--panel);
+    backdrop-filter:blur(6px);
+    padding:32px;
+    border-radius:18px;
+    border:1px solid var(--panel-line);
+    box-shadow:0 0 50px rgba(63,169,245,0.25), inset 0 0 30px rgba(127,232,255,0.05);
+    width:92%;max-width:720px;
+    text-align:center;
+    max-height:92vh;overflow-y:auto;
+  }
+  .hidden{display:none !important;}
 
-        .container {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px solid var(--fire-gold);
-            box-shadow: 0 0 30px rgba(255, 69, 0, 0.4);
-            width: 90%;
-            max-width: 650px;
-            text-align: center;
-        }
+  .brand{font-size:2.6rem;font-weight:900;letter-spacing:2px;margin:0;
+    background:linear-gradient(90deg,var(--ice-cyan),var(--ice-white),var(--ice-blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(127,232,255,0.35);}
+  .subbrand{color:#9fd4ec;letter-spacing:3px;font-weight:600;margin:2px 0 24px;font-size:0.85rem;text-transform:uppercase;}
 
-        .rank-badge {
-            color: var(--fire-gold);
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-            display: block;
-            text-shadow: 0 0 10px var(--fire-red);
-        }
+  input{
+    background:rgba(3,15,26,0.7);
+    border:1px solid var(--panel-line);
+    color:var(--ice-white);
+    padding:13px 14px;width:82%;
+    border-radius:10px;margin-bottom:14px;
+    font-size:1.05rem;font-family:'Rajdhani',sans-serif;font-weight:600;
+    outline:none;
+  }
+  input:focus{border-color:var(--ice-cyan);box-shadow:0 0 10px rgba(127,232,255,0.4);}
 
-        .hidden { display: none; }
+  .btn{
+    background:linear-gradient(135deg,var(--ice-blue),#1b5f8f);
+    border:1px solid var(--ice-cyan);
+    color:var(--ice-white);
+    padding:13px 34px;
+    border-radius:30px;
+    font-weight:700;font-family:'Rajdhani',sans-serif;
+    letter-spacing:1px;
+    cursor:pointer;transition:.25s;
+    text-transform:uppercase;font-size:0.95rem;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(127,232,255,0.5);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-ghost{background:transparent;border:1px solid var(--panel-line);}
+  .btn-small{padding:8px 18px;font-size:0.8rem;}
 
-        input {
-            background: #111;
-            border: 1px solid var(--fire-gold);
-            color: white;
-            padding: 15px;
-            width: 80%;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            font-size: 1.2rem;
-            outline: none;
-        }
+  .tabs{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+  .tab{padding:8px 20px;border-radius:20px;cursor:pointer;font-weight:700;letter-spacing:1px;
+    border:1px solid var(--panel-line);color:#9fd4ec;font-size:0.85rem;text-transform:uppercase;}
+  .tab.active{background:var(--ice-blue);color:#fff;border-color:var(--ice-cyan);}
+  .auth-error{color:var(--danger);min-height:20px;font-weight:600;margin-bottom:6px;font-size:0.9rem;}
 
-        .btn {
-            background: linear-gradient(45deg, #800000, #ff4500);
-            border: 1px solid var(--fire-gold);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
+  .rank-badge{color:var(--ice-cyan);font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    display:block;margin-bottom:6px;text-shadow:0 0 10px rgba(127,232,255,0.4);font-size:0.85rem;}
+  .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
 
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--fire-red); }
+  .level-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px;}
+  .lvl-box{padding:14px 6px;background:rgba(255,255,255,0.03);border-radius:12px;cursor:pointer;
+    border:1px solid #23486a;font-size:0.78rem;line-height:1.3;transition:.2s;}
+  .lvl-box .icon{font-size:1.4rem;display:block;margin-bottom:4px;}
+  .lvl-box.unlocked{background:rgba(63,169,245,0.18);border-color:var(--ice-cyan);}
+  .lvl-box.unlocked:hover{transform:translateY(-3px);box-shadow:0 4px 16px rgba(127,232,255,0.35);}
+  .lvl-box.cleared{border-color:var(--gold);box-shadow:inset 0 0 12px rgba(127,232,255,0.25);}
+  .lvl-box.locked{opacity:0.3;cursor:not-allowed;}
 
-        .level-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
+  /* Battle screen */
+  .battle-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .hearts{font-size:1.1rem;letter-spacing:3px;}
+  .qcount{font-weight:700;color:#9fd4ec;}
 
-        .lvl-box {
-            padding: 15px 5px;
-            background: #222;
-            border-radius: 10px;
-            cursor: pointer;
-            border: 1px solid #444;
-            font-size: 0.8rem;
-        }
+  .boss-wrap{position:relative;margin:10px 0 16px;}
+  .boss-emoji{font-size:3.4rem;display:inline-block;transition:transform .15s;}
+  .boss-emoji.shake{animation:shake .4s;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px) rotate(-4deg);}
+    40%{transform:translateX(8px) rotate(4deg);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }
+  .boss-name{font-weight:800;letter-spacing:1px;margin:4px 0 8px;font-size:1.05rem;color:var(--ice-white);}
+  .hpbar-bg{height:14px;background:rgba(0,0,0,0.4);border-radius:8px;overflow:hidden;border:1px solid var(--panel-line);}
+  .hpbar-fill{height:100%;background:linear-gradient(90deg,#ff5d73,#ffb199);transition:width .35s ease;}
 
-        .lvl-box.unlocked { background: #600; border-color: var(--fire-gold); }
-        .lvl-box.locked { opacity: 0.3; cursor: not-allowed; }
+  .ice-shard{
+    position:absolute;top:40%;left:-10%;font-size:2.2rem;
+    animation:slash .45s ease-out forwards;pointer-events:none;z-index:5;
+  }
+  @keyframes slash{
+    0%{left:-10%;opacity:0;transform:rotate(-30deg) scale(0.6);}
+    30%{opacity:1;}
+    100%{left:70%;opacity:0;transform:rotate(20deg) scale(1.3);}
+  }
+  .crit-text{position:absolute;top:20%;right:5%;color:var(--ice-cyan);font-family:'Orbitron',sans-serif;
+    font-weight:900;font-size:1.1rem;opacity:0;pointer-events:none;}
+  .crit-text.show{animation:critpop .8s ease-out forwards;}
+  @keyframes critpop{
+    0%{opacity:0;transform:translateY(10px) scale(0.7);}
+    30%{opacity:1;transform:translateY(-5px) scale(1.15);}
+    100%{opacity:0;transform:translateY(-25px) scale(1);}
+  }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
+  #timer-bar-bg{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;margin:14px 0;overflow:hidden;}
+  #timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--ice-cyan),var(--ice-blue));width:100%;transition:width .1s linear;}
 
-        .opt-btn {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 1px solid #333;
-            transition: 0.2s;
-        }
+  .qtext{min-height:64px;font-size:1.25rem;font-weight:600;margin:6px 0 18px;}
 
-        .opt-btn:hover { background: rgba(255, 69, 0, 0.2); border-color: var(--fire-gold); }
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+  .opt-btn{background:rgba(255,255,255,0.04);padding:16px;border-radius:12px;cursor:pointer;
+    border:1px solid #23486a;font-weight:600;transition:.15s;font-size:1rem;}
+  .opt-btn:hover{background:rgba(127,232,255,0.15);border-color:var(--ice-cyan);}
+  .opt-btn.correct{background:rgba(127,232,255,0.35);border-color:var(--ice-cyan);}
+  .opt-btn.wrong{background:rgba(255,93,115,0.3);border-color:var(--danger);}
+  .opt-btn.eliminated{opacity:0.15;pointer-events:none;text-decoration:line-through;}
+  .opt-btn.disabled{pointer-events:none;}
 
-        #bar-bg { height: 8px; background: #222; border-radius: 4px; margin: 20px 0; }
-        #bar-fill { height: 100%; background: var(--fire-gold); width: 0%; transition: 0.4s; }
-    </style>
+  .abilities{display:flex;justify-content:center;gap:10px;margin-top:6px;flex-wrap:wrap;}
+  .ability-btn{background:rgba(140,139,255,0.12);border:1px solid var(--frost-purple);color:var(--ice-white);
+    padding:9px 14px;border-radius:12px;font-weight:700;font-size:0.78rem;cursor:pointer;transition:.2s;text-align:left;}
+  .ability-btn small{display:block;color:#c7c6ff;font-weight:500;font-size:0.68rem;}
+  .ability-btn:hover{box-shadow:0 0 12px rgba(140,139,255,0.5);}
+  .ability-btn:disabled{opacity:0.25;cursor:not-allowed;box-shadow:none;}
+
+  #results h1{font-size:1.9rem;margin-bottom:6px;}
+  .res-stats{color:#9fd4ec;font-weight:600;margin-bottom:20px;}
+  .res-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--ice-blue);border-radius:3px;}
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="lobby">
-            <h1 style="font-size: 3rem; margin: 0; color: var(--fire-red);">🔥 FIRE STREAKS</h1>
-            <p style="color: #aaa; margin-bottom: 30px;">THE 100-QUESTION CHALLENGE</p>
-            <input type="text" id="username" placeholder="Warrior Name...">
-            <br>
-            <button class="btn" onclick="enterLobby()">Enter the Fire</button>
-        </div>
+<div id="snow-container"></div>
 
-        <div id="map" class="hidden">
-            <span class="rank-badge" id="current-rank">RANK: SPARK</span>
-            <h2 id="greet" style="margin: 0;"></h2>
-            <div class="level-grid" id="lvl-btns"></div>
-        </div>
+<div class="container">
 
-        <div id="quiz" class="hidden">
-            <div style="display:flex; justify-content: space-between; font-weight: bold;">
-                <span id="rank-display" style="color: var(--fire-gold);">LEVEL</span>
-                <span id="q-num">1/10</span>
-            </div>
-            <div id="bar-bg"><div id="bar-fill"></div></div>
-            <h2 id="q-text" style="min-height: 80px; font-size: 1.4rem;"></h2>
-            <div class="options-grid" id="opts"></div>
-        </div>
+  <!-- AUTH SCREEN -->
+  <div id="auth">
+    <h1 class="brand">❄ ICESLIDER</h1>
+    <p class="subbrand">Blaze, the Ice Master's Trial</p>
 
-        <div id="results" class="hidden">
-            <h1 id="res-title">LEVEL PASSED!</h1>
-            <p id="res-score" style="font-size: 2rem;"></p>
-            <button class="btn" onclick="showMap()">Return to Map</button>
-        </div>
+    <div class="tabs">
+      <div class="tab active" id="tab-login" onclick="switchTab('login')">Log In</div>
+      <div class="tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</div>
     </div>
 
-    <script>
-        let uName = "";
-        let progress = 1;
-        let activeLvl = 1;
-        let qIdx = 0;
-        let score = 0;
+    <div class="auth-error" id="auth-error"></div>
+    <input type="text" id="auth-username" placeholder="Warrior Name" autocomplete="username">
+    <br>
+    <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password">
+    <br>
+    <button class="btn" id="auth-submit" onclick="handleAuthSubmit()">Log In</button>
+    <p style="color:#6f97b3;font-size:0.75rem;margin-top:18px;">
+      Your name and progress are saved in this browser, so you can log back in later on this device.
+    </p>
+  </div>
 
-        const ranks = ["Spark", "Ember", "Flame", "Blaze", "Cinder Knight", "Pyromancer", "Phoenix Rider", "Dragon Slayer", "Inferno Lord", "DRAGON MASTER"];
+  <!-- MAP SCREEN -->
+  <div id="map" class="hidden">
+    <div class="top-row">
+      <div style="text-align:left;">
+        <span class="rank-badge" id="current-rank">RANK: FROSTLING</span>
+        <h2 id="greet" style="margin:0;">Blaze</h2>
+      </div>
+      <button class="btn btn-ghost btn-small" onclick="logOut()">Log Out</button>
+    </div>
+    <p style="color:#9fd4ec;font-size:0.85rem;margin-top:0;">Choose a map. Defeat its guardian to advance.</p>
+    <div class="level-grid" id="lvl-btns"></div>
+  </div>
 
-        const rawData = [
-            ["What is 2 + 3?", "5", "4", "6", "7", 0],
-            ["What planet do we live on?", "Mars", "Earth", "Venus", "Jupiter", 1],
-            ["What shape has 3 sides?", "Square", "Circle", "Triangle", "Hexagon", 2],
-            ["Who invented the light bulb?", "Tesla", "Einstein", "Edison", "Newton", 2],
-            ["What is 10 - 4?", "5", "6", "7", "4", 1],
-            ["What gas do humans breathe in?", "Oxygen", "Nitrogen", "CO2", "Helium", 0],
-            ["What is the capital of India?", "Mumbai", "New Delhi", "Kolkata", "Chennai", 1],
-            ["What is 5 × 2?", "7", "12", "10", "25", 2],
-            ["What is water made of (basic)?", "H2O", "CO2", "NaCl", "O2", 0],
-            ["What is 12 ÷ 3?", "3", "4", "5", "6", 1],
-            ["What is 8 × 4?", "32", "28", "36", "40", 0],
-            ["What planet is known as the Red Planet?", "Venus", "Mars", "Saturn", "Mercury", 1],
-            ["What is the largest ocean?", "Atlantic", "Indian", "Pacific", "Arctic", 2],
-            ["What is 100 - 45?", "55", "65", "45", "50", 0],
-            ["What is 6 × 7?", "42", "48", "36", "49", 0],
-            ["What is the boiling point of water (°C)?", "90", "110", "100", "80", 2],
-            ["Who was the first PM of India?", "Nehru", "Gandhi", "Modi", "Patel", 0],
-            ["What is 9²?", "18", "72", "81", "99", 2],
-            ["What shape has 4 equal sides?", "Rectangle", "Square", "Triangle", "Rhombus", 1],
-            ["What is 72 ÷ 8?", "7", "8", "9", "10", 2],
-            ["What is 15% of 100?", "10", "15", "20", "25", 1],
-            ["What is the hardest natural substance?", "Gold", "Iron", "Diamond", "Stone", 2],
-            ["What is the capital of France?", "Berlin", "Paris", "London", "Madrid", 1],
-            ["What is 14 × 3?", "42", "32", "52", "44", 0],
-            ["What is 81 ÷ 9?", "7", "8", "9", "10", 2],
-            ["What part of the plant makes food?", "Root", "Stem", "Leaf", "Flower", 2],
-            ["What is 5³?", "15", "25", "125", "75", 2],
-            ["What is the longest river?", "Amazon", "Nile", "Mississippi", "Ganges", 1],
-            ["What is 64 ÷ 4?", "14", "16", "18", "12", 1],
-            ["What is 7 × 9?", "56", "64", "63", "72", 2],
-            ["What is 25% of 200?", "25", "50", "75", "100", 1],
-            ["What gas do plants release?", "Oxygen", "Nitrogen", "CO2", "Hydrogen", 0],
-            ["What is the capital of Japan?", "Seoul", "Beijing", "Tokyo", "Bangkok", 2],
-            ["What is 13 × 13?", "169", "144", "196", "133", 0],
-            ["What is 1000 - 478?", "522", "622", "532", "512", 0],
-            ["Who discovered gravity?", "Galileo", "Newton", "Einstein", "Hawking", 1],
-            ["What is 3/4 of 80?", "40", "50", "60", "70", 2],
-            ["What is 9 × 12?", "108", "98", "118", "102", 0],
-            ["What is the freezing point of water?", "10°C", "0°C", "-10°C", "32°C", 1],
-            ["What is 225 ÷ 15?", "12", "15", "25", "18", 1],
-            ["What is 20% of 350?", "70", "60", "80", "50", 0],
-            ["Chemical symbol for gold?", "Ag", "Pb", "Au", "Fe", 2],
-            ["Who wrote the Ramayana?", "Valmiki", "Vyasa", "Tulsidas", "Kalidasa", 0],
-            ["What is 17 × 6?", "102", "112", "92", "104", 0],
-            ["What is 121 ÷ 11?", "10", "11", "12", "13", 1],
-            ["What is 8² + 2²?", "64", "68", "70", "66", 1],
-            ["What is the largest continent?", "Africa", "Asia", "Europe", "N. America", 1],
-            ["What is 500 ÷ 25?", "20", "25", "15", "30", 0],
-            ["What is 36 × 4?", "144", "124", "134", "154", 0],
-            ["What is 19 × 3?", "51", "57", "61", "47", 1],
-            ["What is 400 - 198?", "202", "192", "212", "200", 0],
-            ["Speed of light (km/s)?", "150k", "300k", "500k", "1M", 1],
-            ["Capital of USA?", "NYC", "LA", "Washington DC", "Chicago", 2],
-            ["What is 15 × 15?", "225", "215", "235", "255", 0],
-            ["What is 600 ÷ 20?", "20", "30", "40", "60", 1],
-            ["What is 14²?", "186", "196", "176", "206", 1],
-            ["What organ pumps blood?", "Lungs", "Brain", "Heart", "Liver", 2],
-            ["What is 7 × 8 × 2?", "112", "102", "122", "96", 0],
-            ["What is 3² + 4²?", "25", "49", "12", "20", 0],
-            ["What is 1000 ÷ 10 × 5?", "50", "500", "5", "5000", 1],
-            ["What is 125 × 4?", "400", "500", "600", "450", 1],
-            ["Who discovered electricity?", "Franklin", "Tesla", "Bell", "Edison", 0],
-            ["Tallest mountain?", "K2", "Everest", "Fuji", "Lhotse", 1],
-            ["What is 18²?", "324", "314", "334", "224", 0],
-            ["What is 256 ÷ 16?", "14", "16", "18", "24", 1],
-            ["What is 75% of 240?", "180", "160", "200", "150", 0],
-            ["What is DNA?", "Protein", "Acid", "Genetic Code", "Cell", 2],
-            ["What is 22 × 13?", "286", "276", "296", "266", 0],
-            ["What is 1024 ÷ 8?", "128", "118", "138", "108", 0],
-            ["What is 19²?", "361", "351", "341", "381", 0],
-            ["What is 45 × 12?", "540", "520", "550", "440", 0],
-            ["Largest planet?", "Earth", "Saturn", "Jupiter", "Neptune", 2],
-            ["What is 999 - 678?", "321", "311", "331", "301", 0],
-            ["What is 2³ × 5²?", "100", "200", "400", "150", 1],
-            ["What is 144 × 3?", "432", "422", "442", "412", 0],
-            ["What is 625 ÷ 25?", "25", "15", "35", "5", 0],
-            ["Smallest prime number?", "0", "1", "2", "3", 2],
-            ["What is 17 × 17?", "289", "279", "269", "299", 0],
-            ["What is 1200 ÷ 30?", "40", "30", "50", "60", 0],
-            ["What is 8 × 7 × 6?", "336", "326", "346", "316", 0],
-            ["What is 3/5 of 200?", "120", "100", "140", "80", 0],
-            ["What is 400 × 0.5?", "200", "400", "100", "800", 0],
-            ["What is 81 × 11?", "891", "811", "881", "901", 0],
-            ["What is 72 × 8?", "576", "566", "586", "546", 0],
-            ["What is 250% of 40?", "80", "100", "120", "150", 1],
-            ["What is 90²?", "8100", "1800", "9000", "7200", 0],
-            ["Who discovered penicillin?", "Fleming", "Pasteur", "Curie", "Lister", 0],
-            ["What is 1001 - 499?", "502", "512", "492", "522", 0],
-            ["What is 36 × 25?", "900", "800", "850", "950", 0],
-            ["What is 144 ÷ 6 × 2?", "48", "12", "24", "36", 0],
-            ["What is 7³?", "343", "243", "443", "216", 0],
-            ["What is 999 × 9?", "8991", "8111", "9991", "8999", 0],
-            ["What is 123 × 45?", "5535", "5435", "5635", "5335", 0],
-            ["What is 256 × 16?", "4096", "2048", "8192", "4196", 0],
-            ["What is 1024 ÷ 32?", "32", "16", "64", "24", 0],
-            ["What is 75 × 75?", "5625", "5525", "5725", "6225", 0],
-            ["What is 48 × 48?", "2304", "2404", "2204", "2314", 0],
-            ["What is 13³?", "2197", "1331", "2297", "2097", 0],
-            ["What is 12³?", "1728", "1444", "1828", "1628", 0],
-            ["What is 999 × 999?", "998001", "999001", "998011", "997001", 0]
-        ];
+  <!-- BATTLE SCREEN -->
+  <div id="battle" class="hidden">
+    <div class="battle-top">
+      <span class="hearts" id="hearts-display">❤❤❤</span>
+      <span class="qcount" id="q-num">1/10</span>
+    </div>
 
-        // Format into 10 levels of 10
-        const levels = [];
-        for(let i=0; i<10; i++) levels.push(rawData.slice(i*10, (i+1)*10));
+    <div class="boss-wrap">
+      <div class="boss-name" id="boss-name">GLACIERFANG</div>
+      <div class="boss-emoji" id="boss-emoji">🐺</div>
+      <div class="hpbar-bg"><div class="hpbar-fill" id="boss-hp-fill"></div></div>
+      <div class="crit-text" id="crit-text">CRIT SLASH!</div>
+    </div>
 
-        function enterLobby() {
-            uName = document.getElementById('username').value || "Warrior";
-            showMap();
-        }
+    <div id="timer-bar-bg"><div id="timer-bar-fill"></div></div>
+    <h2 class="qtext" id="q-text">Question text here</h2>
+    <div class="options-grid" id="opts"></div>
 
-        function showMap() {
-            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('map').classList.remove('hidden');
-            document.getElementById('greet').innerText = uName;
-            document.getElementById('current-rank').innerText = `RANK: ${ranks[progress-1]}`;
-            
-            const grid = document.getElementById('lvl-btns');
-            grid.innerHTML = '';
-            for(let i=1; i<=10; i++) {
-                const b = document.createElement('div');
-                b.className = `lvl-box ${i <= progress ? 'unlocked' : 'locked'}`;
-                b.innerHTML = `<small>${ranks[i-1]}</small><br><b>LVL ${i}</b>`;
-                if(i <= progress) b.onclick = () => startLvl(i);
-                grid.appendChild(b);
-            }
-        }
+    <div class="abilities">
+      <button class="ability-btn" id="ab-freeze" onclick="useFreeze()">🧊 Freeze Time<small>+5s to clock</small></button>
+      <button class="ability-btn" id="ab-shield" onclick="useShield()">🛡 Frost Shield<small>Blocks next miss</small></button>
+      <button class="ability-btn" id="ab-sight" onclick="useSight()">👁 Ice Sight<small>Removes 2 wrong</small></button>
+    </div>
+  </div>
 
-        function startLvl(l) {
-            activeLvl = l; qIdx = 0; score = 0;
-            document.getElementById('map').classList.add('hidden');
-            document.getElementById('quiz').classList.remove('hidden');
-            document.getElementById('rank-display').innerText = ranks[l-1];
-            loadQ();
-        }
+  <!-- RESULTS SCREEN -->
+  <div id="results" class="hidden">
+    <h1 id="res-title">🔥 GUARDIAN SHATTERED!</h1>
+    <p class="res-stats" id="res-stats"></p>
+    <div class="res-actions">
+      <button class="btn" id="res-retry" onclick="startLvl(activeLvl)">Retry Map</button>
+      <button class="btn btn-ghost" onclick="showMap()">Return to Map</button>
+    </div>
+  </div>
 
-        function loadQ() {
-            const q = levels[activeLvl-1][qIdx];
-            document.getElementById('q-num').innerText = `${qIdx+1}/10`;
-            document.getElementById('bar-fill').style.width = `${(qIdx/10)*100}%`;
-            document.getElementById('q-text').innerText = q[0];
-            
-            const o = document.getElementById('opts');
-            o.innerHTML = '';
-            for(let i=1; i<=4; i++) {
-                const b = document.createElement('div');
-                b.className = 'opt-btn';
-                b.innerText = q[i];
-                b.onclick = () => {
-                    if((i-1) === q[5]) score++;
-                    qIdx++;
-                    if(qIdx < 10) loadQ(); else finish();
-                };
-                o.appendChild(b);
-            }
-        }
+</div>
 
-        function finish() {
-            document.getElementById('quiz').classList.add('hidden');
-            document.getElementById('results').classList.remove('hidden');
-            const pass = score >= 8;
-            document.getElementById('res-title').innerText = pass ? "🔥 LEVEL ASCENDED!" : "💀 FAILED (Get 8/10)";
-            document.getElementById('res-score').innerText = `${score}/10`;
-            if(pass && activeLvl === progress && progress < 10) progress++;
-        }
-    </script>
+<script>
+/* ============ SNOWFALL BACKGROUND ============ */
+(function(){
+  const c = document.getElementById('snow-container');
+  const flakes = ['❄','❅','❆','•'];
+  for(let i=0;i<32;i++){
+    const f = document.createElement('span');
+    f.className = 'flake';
+    f.textContent = flakes[Math.floor(Math.random()*flakes.length)];
+    f.style.left = Math.random()*100+'vw';
+    f.style.fontSize = (0.5+Math.random()*1.3)+'rem';
+    f.style.animationDuration = (6+Math.random()*10)+'s';
+    f.style.animationDelay = (Math.random()*10)+'s';
+    f.style.opacity = 0.2+Math.random()*0.5;
+    c.appendChild(f);
+  }
+})();
+
+/* ============ AUTH (real persistence via shared storage) ============ */
+let authMode = 'login';
+let currentUser = null;
+let userData = null; // { password: hash, unlocked: N, cleared: [] }
+
+function switchTab(mode){
+  authMode = mode;
+  document.getElementById('tab-login').classList.toggle('active', mode==='login');
+  document.getElementById('tab-signup').classList.toggle('active', mode==='signup');
+  document.getElementById('auth-submit').innerText = mode==='login' ? 'Log In' : 'Sign Up';
+  document.getElementById('auth-error').innerText = '';
+}
+
+function simpleHash(str){
+  let h = 5381;
+  for(let i=0;i<str.length;i++){ h = ((h*33) ^ str.charCodeAt(i)) >>> 0; }
+  return h.toString(36);
+}
+
+function showAuthError(msg){ document.getElementById('auth-error').innerText = msg; }
+
+async function handleAuthSubmit(){
+  const u = document.getElementById('auth-username').value.trim();
+  const p = document.getElementById('auth-password').value;
+  if(!u || !p){ showAuthError('Enter a warrior name and password.'); return; }
+  showAuthError('');
+  if(authMode === 'signup') await signUp(u,p); else await logIn(u,p);
+}
+
+/* Storage layer: uses localStorage so accounts persist in THIS browser,
+   with an in-memory fallback if localStorage is unavailable (private
+   browsing, sandboxed preview, etc.) so the game still runs either way. */
+const memoryStore = {};
+function storageGet(key){
+  try{ return localStorage.getItem(key); }
+  catch(e){ return (key in memoryStore) ? memoryStore[key] : null; }
+}
+function storageSet(key, value){
+  try{ localStorage.setItem(key, value); return true; }
+  catch(e){ memoryStore[key] = value; return true; }
+}
+
+async function signUp(u,p){
+  const existing = storageGet('iceslider_user_'+u);
+  if(existing){ showAuthError('That name is already claimed. Try logging in instead.'); return; }
+
+  const data = { password: simpleHash(p), unlocked: 1, cleared: [] };
+  const ok = storageSet('iceslider_user_'+u, JSON.stringify(data));
+  if(!ok){ showAuthError('Could not create account. Try again.'); return; }
+  currentUser = u; userData = data;
+  enterMap();
+}
+
+async function logIn(u,p){
+  const raw = storageGet('iceslider_user_'+u);
+  if(!raw){ showAuthError('No warrior found with that name. Sign up first.'); return; }
+  let data;
+  try{ data = JSON.parse(raw); }
+  catch(e){ showAuthError('Save data looked corrupted. Try signing up again.'); return; }
+  if(data.password !== simpleHash(p)){ showAuthError('Wrong password.'); return; }
+  currentUser = u; userData = data;
+  enterMap();
+}
+
+async function saveProgress(){
+  if(!currentUser) return;
+  storageSet('iceslider_user_'+currentUser, JSON.stringify(userData));
+}
+
+function logOut(){
+  currentUser = null; userData = null;
+  document.getElementById('auth-username').value='';
+  document.getElementById('auth-password').value='';
+  showScreen('auth');
+}
+
+function enterMap(){ showScreen('map'); showMap(); }
+
+function showScreen(id){
+  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+/* ============ GAME DATA ============ */
+const RANKS = ["Frostling","Icicle Scout","Snow Warden","Blizzard Knight","Glacier Guardian",
+  "Aurora Mystic","Permafrost Paladin","Void Walker","Reactor Breaker","ICE MASTER"];
+
+const MAP_META = [
+  {name:"Frostbite Foothills", topic:"Arithmetic", boss:"GLACIERFANG", emoji:"🐺", icon:"🔢"},
+  {name:"Crystal Caverns",     topic:"Geography",  boss:"STALAG THE SENTINEL", emoji:"🗿", icon:"🌍"},
+  {name:"Snowdrift Wastes",    topic:"Science & Nature", boss:"BLIZZARD WRAITH", emoji:"🌀", icon:"🧪"},
+  {name:"Aurora Archives",     topic:"History",    boss:"CHRONICLE WIGHT", emoji:"👻", icon:"📜"},
+  {name:"Permafrost Peaks",    topic:"Advanced Math", boss:"CRYO COLOSSUS", emoji:"⛰️", icon:"➗"},
+  {name:"Glacial Void",        topic:"Space",      boss:"VOIDGLASS SERPENT", emoji:"🐍", icon:"🌌"},
+  {name:"Frozen Marrow",       topic:"Biology",    boss:"MARROWFROST", emoji:"💀", icon:"🧬"},
+  {name:"Subzero Labs",        topic:"Chemistry",  boss:"ELEMENT WARDEN", emoji:"⚗️", icon:"⚗️"},
+  {name:"Polar Reactor",       topic:"Physics",    boss:"REACTOR KING", emoji:"☢️", icon:"⚡"},
+  {name:"The Shattered Throne",topic:"Mixed Mastery", boss:"KRYOVAX, THE FROST TYRANT", emoji:"👑", icon:"👑"}
+];
+
+// per-level [timerSeconds, bossMaxHP]
+const LEVEL_CONFIG = [
+  [12,100],[11,110],[10.5,120],[10,130],[9.5,140],
+  [9,150],[8.5,160],[8,170],[7.5,180],[7,200]
+];
+
+const QUESTIONS = [
+[ // 1 Arithmetic
+["What is 2 + 3?","5","4","6","7",0],
+["What is 10 - 4?","5","6","7","4",1],
+["What is 5 x 2?","7","12","10","25",2],
+["What is 12 / 3?","3","4","5","6",1],
+["What is 8 x 4?","32","28","36","40",0],
+["What is 100 - 45?","55","65","45","50",0],
+["What is 72 / 8?","7","8","9","10",2],
+["What is 15% of 100?","10","15","20","25",1],
+["What is 9 squared?","18","72","81","99",2],
+["What is 6 x 7?","42","48","36","49",0]
+],
+[ // 2 Geography
+["What planet do we live on?","Mars","Earth","Venus","Jupiter",1],
+["What is the capital of India?","Mumbai","New Delhi","Kolkata","Chennai",1],
+["What is the largest ocean?","Atlantic","Indian","Pacific","Arctic",2],
+["What is the capital of France?","Berlin","Paris","London","Madrid",1],
+["What is the longest river?","Amazon","Nile","Mississippi","Ganges",1],
+["What is the capital of Japan?","Seoul","Beijing","Tokyo","Bangkok",2],
+["What is the largest continent?","Africa","Asia","Europe","N. America",1],
+["What is the capital of the USA?","New York","Los Angeles","Washington DC","Chicago",2],
+["What is the tallest mountain?","K2","Everest","Fuji","Lhotse",1],
+["Which planet is known as the Red Planet?","Venus","Mars","Saturn","Mercury",1]
+],
+[ // 3 Science & Nature
+["What gas do humans breathe in to live?","Oxygen","Nitrogen","CO2","Helium",0],
+["What is water made of, in basic terms?","H2O","CO2","NaCl","O2",0],
+["What is the boiling point of water in Celsius?","90","110","100","80",2],
+["What is the freezing point of water?","10C","0C","-10C","32C",1],
+["What gas do plants release?","Oxygen","Nitrogen","CO2","Hydrogen",0],
+["What part of a plant makes its food?","Root","Stem","Leaf","Flower",2],
+["What is the hardest natural substance?","Gold","Iron","Diamond","Stone",2],
+["What is the chemical symbol for gold?","Ag","Pb","Au","Fe",2],
+["Which organ pumps blood through the body?","Lungs","Brain","Heart","Liver",2],
+["What is DNA best described as?","A protein","An acid","Genetic code","A cell",2]
+],
+[ // 4 History
+["Who is credited with inventing the light bulb?","Tesla","Einstein","Edison","Newton",2],
+["Who was the first Prime Minister of India?","Nehru","Gandhi","Modi","Patel",0],
+["Who is credited with discovering gravity?","Galileo","Newton","Einstein","Hawking",1],
+["Who wrote the Ramayana?","Valmiki","Vyasa","Tulsidas","Kalidasa",0],
+["Who is credited with discovering electricity's practical uses?","Franklin","Tesla","Bell","Edison",0],
+["Who discovered penicillin?","Fleming","Pasteur","Curie","Lister",0],
+["Who painted the Mona Lisa?","Da Vinci","Picasso","Van Gogh","Monet",0],
+["In what year did World War II end?","1943","1945","1947","1950",1],
+["Which wall is located in China?","The Great Wall","Hadrian's Wall","Berlin Wall","Wailing Wall",0],
+["Who was the first woman to fly solo across the Atlantic?","Amelia Earhart","Bessie Coleman","Sally Ride","Valentina Tereshkova",0]
+],
+[ // 5 Advanced Math
+["What is 13 x 13?","169","144","196","133",0],
+["What is 1000 - 478?","522","622","532","512",0],
+["What is 3/4 of 80?","40","50","60","70",2],
+["What is 225 / 15?","12","15","25","18",1],
+["What is 20% of 350?","70","60","80","50",0],
+["What is 17 x 6?","102","112","92","104",0],
+["What is 121 / 11?","10","11","12","13",1],
+["What is 8 squared plus 2 squared?","64","68","70","66",1],
+["What is 500 / 25?","20","25","15","30",0],
+["What is 36 x 4?","144","124","134","154",0]
+],
+[ // 6 Space
+["Roughly, what is the speed of light in km/s?","150,000","300,000","500,000","1,000,000",1],
+["What is the largest planet in our solar system?","Earth","Saturn","Jupiter","Neptune",2],
+["How many planets are in our solar system?","7","8","9","10",1],
+["A light-year measures which quantity?","Time","Distance","Speed","Mass",1],
+["Which planet has the most confirmed moons?","Earth","Mars","Saturn","Mercury",2],
+["What is the closest star to Earth?","Proxima Centauri","The Sun","Sirius","Alpha Centauri",1],
+["What galaxy do we live in?","Andromeda","Milky Way","Triangulum","Whirlpool",1],
+["What do we call Earth's natural satellite?","Titan","The Moon","Europa","Phobos",1],
+["Who was the first person to walk on the Moon?","Buzz Aldrin","Neil Armstrong","Yuri Gagarin","John Glenn",1],
+["What is a shooting star actually?","A comet","A meteor","A planet","A satellite",1]
+],
+[ // 7 Biology
+["What is often called the powerhouse of the cell?","Nucleus","Mitochondria","Ribosome","Golgi Body",1],
+["How many chambers does the human heart have?","2","3","4","5",2],
+["What is the basic unit of life?","Cell","Atom","Tissue","Organ",0],
+["Which blood cells help fight infection?","Red blood cells","White blood cells","Platelets","Plasma",1],
+["What do we call animals that eat only plants?","Carnivore","Herbivore","Omnivore","Insectivore",1],
+["Approximately how many bones are in the adult human body?","186","206","226","246",1],
+["What is the largest organ in the human body?","Liver","Brain","Skin","Heart",2],
+["Which organ filters waste from the blood?","Kidney","Liver","Lungs","Stomach",0],
+["What process do plants use to make food from sunlight?","Respiration","Digestion","Photosynthesis","Fermentation",2],
+["What do bees mainly collect from flowers to make honey?","Pollen","Leaves","Nectar","Sap",2]
+],
+[ // 8 Chemistry
+["What is the chemical formula for water?","H2O","CO2","O2","NaCl",0],
+["What is the most abundant gas in Earth's atmosphere?","Oxygen","Nitrogen","CO2","Argon",1],
+["What is table salt made of?","Sodium Chloride","Potassium Iodide","Calcium Carbonate","Sodium Bicarbonate",0],
+["What is the atomic number of Hydrogen?","0","1","2","3",1],
+["Which element has the chemical symbol 'Fe'?","Fluorine","Iron","Francium","Fermium",1],
+["Which state of matter has no fixed shape or volume?","Solid","Liquid","Gas","Plasma",2],
+["What do we call a substance that speeds up a reaction?","Catalyst","Reactant","Solvent","Isotope",0],
+["What is the pH of pure water?","0","7","14","10",1],
+["Which gas is commonly used to make balloons float?","Oxygen","Helium","Nitrogen","CO2",1],
+["What is the chemical symbol for Sodium?","So","Sd","Na","Nm",2]
+],
+[ // 9 Physics
+["What force pulls objects toward Earth?","Magnetism","Friction","Gravity","Tension",2],
+["What is the SI unit of electric current?","Volt","Watt","Ampere","Ohm",2],
+["Sound travels fastest through which medium?","Air","Water","Vacuum","Solids",3],
+["What is the SI unit of force?","Joule","Newton","Pascal","Watt",1],
+["What type of energy is stored energy called?","Kinetic","Potential","Thermal","Sound",1],
+["Who formulated the three laws of motion?","Einstein","Newton","Galileo","Tesla",1],
+["What is the boiling point of water in Fahrenheit?","100F","180F","212F","32F",2],
+["Which travels faster, light or sound?","Light","Sound","Same speed","Depends",0],
+["What is the SI unit of energy?","Newton","Joule","Watt","Pascal",1],
+["What do we call the feeling of weightlessness in orbit?","Freefall","Weightlessness","Vacuum","Orbit",1]
+],
+[ // 10 Mixed Mastery (final)
+["What is 999 x 999?","998001","999001","998011","997001",0],
+["What is 12 cubed?","1728","1444","1828","1628",0],
+["What is 999 - 678?","321","311","331","301",0],
+["What is 75% of 240?","180","160","200","150",0],
+["What is 256 / 16?","14","16","18","24",1],
+["What is 22 x 13?","286","276","296","266",0],
+["What is the chemical symbol for gold?","Ag","Pb","Au","Fe",2],
+["Who is credited with discovering gravity?","Galileo","Newton","Einstein","Hawking",1],
+["What is the largest planet in our solar system?","Earth","Saturn","Jupiter","Neptune",2],
+["What is often called the powerhouse of the cell?","Nucleus","Mitochondria","Ribosome","Golgi Body",1]
+]
+];
+
+/* ============ GAME STATE ============ */
+let activeLvl = 1;
+let qIdx = 0;
+let hearts = 3;
+let bossHP = 100, bossMaxHP = 100;
+let totalTime = 10, remaining = 10;
+let timerInterval = null;
+let shieldActive = false;
+let abilitiesUsed = {freeze:false, shield:false, sight:false};
+let crits = 0, correctCount = 0;
+let questionLocked = false;
+
+/* ============ MAP SCREEN ============ */
+function showMap(){
+  showScreen('map');
+  document.getElementById('greet').innerText = currentUser || 'Blaze';
+  const rankIdx = Math.max(0, (userData.unlocked - 1));
+  document.getElementById('current-rank').innerText = 'RANK: ' + RANKS[Math.min(rankIdx, RANKS.length-1)].toUpperCase();
+
+  const grid = document.getElementById('lvl-btns');
+  grid.innerHTML = '';
+  for(let i=1;i<=10;i++){
+    const meta = MAP_META[i-1];
+    const unlocked = i <= userData.unlocked;
+    const cleared = userData.cleared.includes(i);
+    const b = document.createElement('div');
+    b.className = `lvl-box ${unlocked ? 'unlocked':'locked'} ${cleared?'cleared':''}`;
+    b.innerHTML = `<span class="icon">${meta.icon}</span><b>MAP ${i}</b><br><small>${meta.name}</small>`;
+    if(unlocked) b.onclick = () => startLvl(i);
+    grid.appendChild(b);
+  }
+}
+
+/* ============ BATTLE FLOW ============ */
+function startLvl(l){
+  activeLvl = l; qIdx = 0; hearts = 3; crits = 0; correctCount = 0;
+  abilitiesUsed = {freeze:false, shield:false, sight:false};
+  shieldActive = false;
+
+  const cfg = LEVEL_CONFIG[l-1];
+  totalTime = cfg[0]; bossMaxHP = cfg[1]; bossHP = bossMaxHP;
+
+  const meta = MAP_META[l-1];
+  document.getElementById('boss-name').innerText = meta.boss;
+  document.getElementById('boss-emoji').innerText = meta.emoji;
+  resetAbilityButtons();
+  showScreen('battle');
+  loadQ();
+}
+
+function resetAbilityButtons(){
+  document.getElementById('ab-freeze').disabled = false;
+  document.getElementById('ab-shield').disabled = false;
+  document.getElementById('ab-sight').disabled = false;
+}
+
+function updateHUD(){
+  document.getElementById('q-num').innerText = `${qIdx+1}/10`;
+  document.getElementById('hearts-display').innerText = '❤'.repeat(hearts) + '🖤'.repeat(3-hearts);
+  document.getElementById('boss-hp-fill').style.width = Math.max(0,(bossHP/bossMaxHP)*100) + '%';
+}
+
+function loadQ(){
+  questionLocked = false;
+  updateHUD();
+  const q = QUESTIONS[activeLvl-1][qIdx];
+  document.getElementById('q-text').innerText = q[0];
+
+  const o = document.getElementById('opts');
+  o.innerHTML = '';
+  for(let i=1;i<=4;i++){
+    const btn = document.createElement('div');
+    btn.className = 'opt-btn';
+    btn.dataset.idx = i-1;
+    btn.innerText = q[i];
+    btn.onclick = () => selectOption(i-1, q[5], btn);
+    o.appendChild(btn);
+  }
+
+  remaining = totalTime;
+  document.getElementById('timer-bar-fill').style.width = '100%';
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    remaining -= 0.1;
+    document.getElementById('timer-bar-fill').style.width = Math.max(0,(remaining/totalTime)*100) + '%';
+    if(remaining <= 0){
+      clearInterval(timerInterval);
+      handleMiss(true);
+    }
+  }, 100);
+}
+
+function selectOption(idx, correctIdx, btnEl){
+  if(questionLocked) return;
+  questionLocked = true;
+  clearInterval(timerInterval);
+
+  const opts = document.querySelectorAll('.opt-btn');
+  if(idx === correctIdx){
+    btnEl.classList.add('correct');
+    const isCrit = (remaining / totalTime) > 0.6;
+    handleHit(isCrit);
+  } else {
+    btnEl.classList.add('wrong');
+    opts[correctIdx].classList.add('correct');
+    handleMiss(false);
+  }
+  opts.forEach(o => o.classList.add('disabled'));
+}
+
+function handleHit(isCrit){
+  correctCount++;
+  const dmg = isCrit ? 22 : 12;
+  if(isCrit){ crits++; showCrit(); }
+  spawnSlash();
+  bossHP -= dmg;
+  updateHUD();
+  setTimeout(nextStep, 650);
+}
+
+function handleMiss(wasTimeout){
+  if(!wasTimeout){
+    // still lock options visually as done above
+  }
+  if(shieldActive){
+    shieldActive = false;
+  } else {
+    hearts--;
+    document.getElementById('boss-emoji').classList.add('shake');
+    setTimeout(()=>document.getElementById('boss-emoji').classList.remove('shake'), 400);
+  }
+  updateHUD();
+  setTimeout(nextStep, 650);
+}
+
+function spawnSlash(){
+  const wrap = document.querySelector('.boss-wrap');
+  const shard = document.createElement('div');
+  shard.className = 'ice-shard';
+  shard.textContent = '🗡️';
+  wrap.appendChild(shard);
+  const boss = document.getElementById('boss-emoji');
+  boss.classList.add('shake');
+  setTimeout(()=>{ boss.classList.remove('shake'); shard.remove(); }, 500);
+}
+
+function showCrit(){
+  const el = document.getElementById('crit-text');
+  el.classList.remove('show'); void el.offsetWidth;
+  el.classList.add('show');
+}
+
+function nextStep(){
+  if(bossHP <= 0){ victory(); return; }
+  if(hearts <= 0){ defeat(); return; }
+  qIdx++;
+  if(qIdx >= 10){ defeat(); return; }
+  loadQ();
+}
+
+async function victory(){
+  clearInterval(timerInterval);
+  if(!userData.cleared.includes(activeLvl)) userData.cleared.push(activeLvl);
+  if(activeLvl === userData.unlocked && userData.unlocked < 10) userData.unlocked++;
+  await saveProgress();
+
+  showScreen('results');
+  document.getElementById('res-title').innerText = `❄ ${MAP_META[activeLvl-1].boss} SHATTERED!`;
+  document.getElementById('res-stats').innerText =
+    `${correctCount}/10 correct - ${crits} crit slashes - ${hearts} heart(s) remaining`;
+  document.getElementById('res-retry').classList.add('hidden');
+}
+
+function defeat(){
+  clearInterval(timerInterval);
+  showScreen('results');
+  document.getElementById('res-title').innerText = `💀 ${MAP_META[activeLvl-1].boss} SURVIVES`;
+  document.getElementById('res-stats').innerText =
+    `${correctCount}/10 correct - ${crits} crit slashes. The guardian still stands. Try again.`;
+  document.getElementById('res-retry').classList.remove('hidden');
+}
+
+/* ============ ABILITIES ============ */
+function useFreeze(){
+  if(abilitiesUsed.freeze || questionLocked) return;
+  abilitiesUsed.freeze = true;
+  document.getElementById('ab-freeze').disabled = true;
+  remaining = Math.min(totalTime + 2, remaining + 5);
+}
+
+function useShield(){
+  if(abilitiesUsed.shield) return;
+  abilitiesUsed.shield = true;
+  shieldActive = true;
+  document.getElementById('ab-shield').disabled = true;
+}
+
+function useSight(){
+  if(abilitiesUsed.sight || questionLocked) return;
+  abilitiesUsed.sight = true;
+  document.getElementById('ab-sight').disabled = true;
+  const q = QUESTIONS[activeLvl-1][qIdx];
+  const correctIdx = q[5];
+  const wrongIdxs = [0,1,2,3].filter(i => i !== correctIdx);
+  // eliminate 2 of the 3 wrong options
+  const toRemove = wrongIdxs.sort(()=>Math.random()-0.5).slice(0,2);
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    if(toRemove.includes(Number(btn.dataset.idx))) btn.classList.add('eliminated');
+  });
+}
+</script>
 </body>
 </html>
